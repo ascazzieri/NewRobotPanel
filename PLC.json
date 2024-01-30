@@ -1,0 +1,14 @@
+{
+	"0":
+	{
+		"plcId": "9FB9F56846B5B5CEF61FA6BA696816A2",
+		"url": "http://10.100.145.11:90/index.html?visuId=firstvisu",
+		"isActive": "false",
+		"loadDelay": "5.0",
+		"connection":
+		{
+			"ip": "10.0.0.102",
+			"port": "5001"
+		}
+	}
+}

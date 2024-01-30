@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<rtde_config>
+	<recipe key="out">
+		<field name="target_q" type="VECTOR6D"/>
+	</recipe>
+</rtde_config>

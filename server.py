@@ -233,6 +233,11 @@ class RobotConnection:
             msg = bytesAddressPair[0]
             addr = bytesAddressPair[1]
 
+
+            ##########################
+            ######   RECEIVE    ######
+            ######  py -> robot ######
+            ##########################  
             # getting data from message: axis positions, spare analog outputs, spare digital outputs 
             dataCount = self.data.J_COUNT + self.data.AO_COUNT + self.data.DO_COUNT
             start = 0
@@ -261,7 +266,10 @@ class RobotConnection:
             if self.data.IS_DEBUG:
                 continue
 
-            # pack message to return to PLC 
+            ##########################
+            #######    SEND    #######
+            ######  py -> robot ######
+            ##########################   
             msgToPLC = bytes()
             #for j in self.j_data:
             #    msgToPLC = msgToPLC + struct.pack("f", j)

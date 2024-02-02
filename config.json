@@ -1,19 +1,20 @@
 {
-    "quantity": 10,
+    "quantity": 1,
     "0": {
         "uid": "56358B606A214E11BA2D3491E1D4A4B1",
         "name": "Controllore",
         "type": "0: Staubli (SRS)",
         "connection": {
-            "udp_host_entry": "10.0.0.102",
+            "udp_host_entry": "10.100.145.23",
             "udp_port_entry": "8010",
             "tcp_host_entry": "127.0.0.1",
             "tcp_port_entry": "1012"
         },
         "selectedJoints": 4,
-        "analogs_entry": 4,
-        "do_entry": 4,
-        "di_entry": 6,
+        "ai_entry": 4,
+        "ao_entry": 4,
+        "do_entry": 15,
+        "di_entry": 15,
         "isSimulate": 0,
         "isActive": 1,
         "move_joints": [
@@ -21,251 +22,6 @@
             0.0,
             0.0,
             0.0
-        ]
-    },
-    "1": {
-        "uid": "A8A1CECBD8624F7DAAFFE4E2C90E84E3",
-        "name": "Robot2",
-        "type": "0: Staubli (SRS)",
-        "connection": {
-            "udp_host_entry": "10.0.0.102",
-            "udp_port_entry": "8011",
-            "tcp_host_entry": "127.0.0.1",
-            "tcp_port_entry": "1013"
-        },
-        "selectedJoints": 4,
-        "analogs_entry": 4,
-        "do_entry": 4,
-        "di_entry": 6,
-        "isSimulate": 0,
-        "isActive": 0,
-        "move_joints": [
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        ]
-    },
-    "2": {
-        "uid": "E00B824108214CE08A18EEC88A9AAFA1",
-        "name": "Training",
-        "type": "0: Staubli (SRS)",
-        "connection": {
-            "udp_host_entry": "10.0.0.102",
-            "udp_port_entry": "8012",
-            "tcp_host_entry": "127.0.0.1",
-            "tcp_port_entry": "1014"
-        },
-        "selectedJoints": 4,
-        "analogs_entry": 4,
-        "do_entry": 4,
-        "di_entry": 6,
-        "isSimulate": 0,
-        "isActive": 1,
-        "move_joints": [
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        ]
-    },
-    "3": {
-        "uid": "23C446776E6E4928A0C60D20A66FF034",
-        "name": "Robot10",
-        "type": "0: Staubli (SRS)",
-        "connection": {
-            "udp_host_entry": "10.0.0.102",
-            "udp_port_entry": "8026",
-            "tcp_host_entry": "127.0.0.1",
-            "tcp_port_entry": "1026"
-        },
-        "selectedJoints": 6,
-        "analogs_entry": 4,
-        "do_entry": 4,
-        "di_entry": 6,
-        "isSimulate": 0,
-        "isActive": 0,
-        "move_joints": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        ]
-    },
-    "4": {
-        "uid": "0E19B0FF630748458951A55C5129093E",
-        "name": "Vuoto",
-        "type": "0: Staubli (SRS)",
-        "connection": {
-            "udp_host_entry": "10.0.0.102",
-            "udp_port_entry": "8027",
-            "tcp_host_entry": "127.0.0.1",
-            "tcp_port_entry": "1027"
-        },
-        "selectedJoints": 6,
-        "analogs_entry": 4,
-        "do_entry": 4,
-        "di_entry": 6,
-        "isSimulate": 0,
-        "isActive": 1,
-        "move_joints": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        ]
-    },
-    "5": {
-        "uid": "943A84A02EB544F08DFF36DF8DF76D18",
-        "name": "Robot12",
-        "type": "0: Staubli (SRS)",
-        "connection": {
-            "udp_host_entry": "10.0.0.102",
-            "udp_port_entry": "8028",
-            "tcp_host_entry": "127.0.0.1",
-            "tcp_port_entry": "1028"
-        },
-        "selectedJoints": 6,
-        "analogs_entry": 4,
-        "do_entry": 4,
-        "di_entry": 6,
-        "isSimulate": 0,
-        "isActive": 0,
-        "move_joints": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        ]
-    },
-    "6": {
-        "uid": "011ED014D09B41FFAF26A26B375EDBB6",
-        "name": "Universal",
-        "type": "1: Universal Robot - UR",
-        "connection": {
-            "udp_host_entry": "10.0.0.102",
-            "udp_port_entry": "30004",
-            "tcp_host_entry": "127.0.0.1",
-            "tcp_port_entry": "1030"
-        },
-        "selectedJoints": 6,
-        "analogs_entry": 4,
-        "do_entry": 4,
-        "di_entry": 6,
-        "isSimulate": 1,
-        "isActive": 1,
-        "move_joints": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        ]
-    },
-    "7": {
-        "uid": "011ED014D09B41LAAF26A26B375EDBB7",
-        "name": "Fanuc",
-        "type": "2: FANUC - FN",
-        "connection": {
-            "udp_host_entry": "10.0.0.102",
-            "udp_port_entry": "187358",
-            "tcp_host_entry": "127.0.0.1",
-            "tcp_port_entry": "1030"
-        },
-        "selectedJoints": 6,
-        "analogs_entry": 4,
-        "do_entry": 4,
-        "di_entry": 6,
-        "isSimulate": 1,
-        "isActive": 1,
-        "move_joints": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        ]
-    },
-    "8": {
-        "uid": "011EL914D09B41LAAF22M26B375EDBB7",
-        "name": "KUKA1",
-        "type": "3: KUKA - KK",
-        "connection": {
-            "udp_host_entry": "10.0.0.102",
-            "udp_port_entry": "808080",
-            "tcp_host_entry": "127.0.0.1",
-            "tcp_port_entry": "1030"
-        },
-        "selectedJoints": 6,
-        "analogs_entry": 4,
-        "do_entry": 4,
-        "di_entry": 6,
-        "isSimulate": 1,
-        "isActive": 1,
-        "move_joints": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        ]
-    },
-    "9": {
-        "uid": "B963034B9CC540868249331E119AD33B",
-        "name": "Roberto",
-        "type": "0: Staubli (SRS)",
-        "connection": {
-            "udp_host_entry": "192.168.248.100",
-            "udp_port_entry": "8010",
-            "tcp_host_entry": "127.0.0.1",
-            "tcp_port_entry": "1012"
-        },
-        "selectedJoints": 4,
-        "analogs_entry": 4,
-        "do_entry": 4,
-        "di_entry": 6,
-        "isSimulate": 1,
-        "isActive": 1,
-        "move_joints": [
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        ],
-        "saved_robtargets": [
-            [
-                -118.9,
-                115.6,
-                -82.57,
-                69.36
-            ],
-            [
-                59.45,
-                115.6,
-                155.23,
-                138.72
-            ],
-            [
-                -181.65,
-                -201.47,
-                -181.65,
-                -128.81
-            ],
-            [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ]
         ]
     }
 }

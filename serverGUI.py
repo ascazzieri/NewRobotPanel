@@ -261,24 +261,38 @@ class ConnectionPanel:
         jointsDrop = OptionMenu(propFrame, self.selectedJoints[index], *data.JOINTS_OPTIONS, command=lambda x: self.changeJoints(index, x))
         jointsDrop.grid(row=1, column=0)
 
-        analogLabel = Label(propFrame, text="Analogs")
-        analogLabel.grid(row=0, column=1, padx=3)
-        analogEntry = Entry(propFrame, name="analogs_entry", justify=CENTER, width=4)
-        analogEntry.grid(row=1, column=1)
-        analogEntry.insert(0, data.A_COUNT)
-        analogEntry.config(state='disabled')
+        #analogLabel = Label(propFrame, text="Analogs")
+        #analogLabel.grid(row=0, column=1, padx=3)
+        #analogEntry = Entry(propFrame, name="analogs_entry", justify=CENTER, width=4)
+        #analogEntry.grid(row=1, column=1)
+        #analogEntry.insert(0, data.A_COUNT)
+        #analogEntry.config(state='disabled')
 
-        doLabel = Label(propFrame, text="Digital output")
-        doLabel.grid(row=0, column=2, padx=3)
-        doEntry = Entry(propFrame, name="do_entry", justify=CENTER, width=4)
-        doEntry.grid(row=1, column=2)
+        aoLabel = Label(propFrame, text = "AOs")
+        aoLabel.grid(row = 0, column = 1, padx = 0)
+        aoEntry = Entry(propFrame,name = "ao_entry", justify = CENTER, width = 4)
+        aoEntry.grid(row = 1, column = 1)
+        aoEntry.insert(0, data.AO_COUNT)
+        aoEntry.config(state='disabled')
+
+        aiLabel = Label(propFrame, text = "AIs")
+        aiLabel.grid(row = 0, column = 2, padx = 9)
+        aiEntry = Entry(propFrame,name = "ai_entry", justify = CENTER, width = 4)
+        aiEntry.grid(row = 1, column = 2)
+        aiEntry.insert(0, data.AI_COUNT)
+        aiEntry.config(state='disabled')
+
+        doLabel = Label(propFrame, text="DOs")
+        doLabel.grid(row=0, column=3, padx=9)
+        doEntry = Entry(propFrame, name="do_entry", justify = CENTER, width = 4)
+        doEntry.grid(row=1, column=3)
         doEntry.insert(0, data.DO_COUNT)
         doEntry.config(state='disabled')
 
-        diLabel = Label(propFrame, text="Digital input")
-        diLabel.grid(row=0, column=3, padx=3)
-        diEntry = Entry(propFrame, name="di_entry", justify=CENTER, width=4)
-        diEntry.grid(row=1, column=3)
+        diLabel = Label(propFrame, text="DIs")
+        diLabel.grid(row=0, column=4, padx=9)
+        diEntry = Entry(propFrame, name="di_entry", justify = CENTER, width = 4)
+        diEntry.grid(row=1, column=4)
         diEntry.insert(0, data.DI_COUNT)
         diEntry.config(state='disabled')
 
@@ -744,7 +758,8 @@ class ConnectionPanel:
             setupTab.children["tcp_frame"].children["tcp_host_entry"].get(),
             setupTab.children["tcp_frame"].children["tcp_port_entry"].get(),
             self.selectedJoints[index].get(),
-            setupTab.children["props_frame"].children["analogs_entry"].get(),
+            setupTab.children["props_frame"].children["ao_entry"].get(),
+            setupTab.children["props_frame"].children["ai_entry"].get(),
             setupTab.children["props_frame"].children["do_entry"].get(),
             setupTab.children["props_frame"].children["di_entry"].get(),
             self.isSimulate[index].get(),
@@ -831,7 +846,9 @@ class ConnectionPanel:
                 'tcp_port_entry': setupTab.children["tcp_frame"].children["tcp_port_entry"].get()
             }
             obj['selectedJoints'] = int(self.selectedJoints[index].get())
-            obj['analogs_entry'] = int(setupTab.children["props_frame"].children["analogs_entry"].get())
+            #obj['analogs_entry'] = int(setupTab.children["props_frame"].children["analogs_entry"].get())
+            obj['ao_entry'] = int(setupTab.children["props_frame"].children["ao_entry"].get())
+            obj['ai_entry'] = int(setupTab.children["props_frame"].children["ai_entry"].get())
             obj['do_entry'] = int(setupTab.children["props_frame"].children["do_entry"].get())
             obj['di_entry'] = int(setupTab.children["props_frame"].children["di_entry"].get())
             obj['isSimulate'] = self.isSimulate[index].get()
@@ -874,7 +891,9 @@ class ConnectionPanel:
                 self.setEntry(setupTab.children["tcp_frame"].children["tcp_port_entry"], config[str(i)]["connection"]["tcp_port_entry"])
                 self.selectedJoints[i].set(config[str(i)]["selectedJoints"])
                 self.queue.put([i, {'udpateJoints': config[str(i)]["selectedJoints"]}])
-                self.setEntry(setupTab.children["props_frame"].children["analogs_entry"], config[str(i)]["analogs_entry"])
+                #self.setEntry(setupTab.children["props_frame"].children["analogs_entry"], config[str(i)]["analogs_entry"])
+                self.setEntry(setupTab.children["props_frame"].children["ao_entry"], config[str(i)]["ao_entry"])
+                self.setEntry(setupTab.children["props_frame"].children["ai_entry"], config[str(i)]["ai_entry"])
                 self.setEntry(setupTab.children["props_frame"].children["do_entry"], config[str(i)]["do_entry"])
                 self.setEntry(setupTab.children["props_frame"].children["di_entry"], config[str(i)]["di_entry"])
                 self.isSimulate[i].set(1 if config[str(i)]["isSimulate"] else 0)

@@ -27,7 +27,7 @@ class Data:
 
     # Data exchange variables
     J_COUNT        = JOINTS_OPTIONS[0]   # analog (PLC) outputs: actual joints poisition (robot -> py -> UE)
-    AO_COUNT       = J_COUNT             # analog (PLC) outputs: spares (robot -> py -> UE)
+    AO_COUNT       = J_COUNT       # analog (PLC) outputs: spares (robot -> py -> UE)
     AI_COUNT       = J_COUNT             # analog (PLC) inputs : only spares (UE -> py -> robot)
     DO_COUNT       = 15                  # output digital (robot -> py -> UE)
     DI_COUNT       = 15                  # input digital (UE -> py -> robot)

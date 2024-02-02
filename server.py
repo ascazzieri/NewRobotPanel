@@ -8,7 +8,7 @@ from data import Data
 from serverGUI import ConnectionPanel
 from logger import Logger
 from utils import is_number_regex
-from fanucpy import Robot
+#from fanucpy import Robot
 # Universal Robot imports
 import rtde.rtde as rtde
 import rtde.rtde_config as rtde_config
@@ -273,12 +273,14 @@ class RobotConnection:
             msgToPLC = bytes()
             #for j in self.j_data:
             #    msgToPLC = msgToPLC + struct.pack("f", j)
-            for ai in self.ai_data:
+
+            for ai in self.j_data:                                  # CAMBIA CON AI DATA !!!!!!!!!!!!!!!!!!!!!!!!!!
                 msgToPLC = msgToPLC + struct.pack("f", ai)
+
             #for do in self.do_data:
             #    msgToPLC = msgToPLC + struct.pack("h", do)
-            for di in self.di_data:
-                msgToPLC = msgToPLC + struct.pack("h", int(di))
+            for di in self.do_data:                                 # CAMBIA CON DI DATA !!!!!!!!!!!!!!!!!!!!!!!!!!
+                msgToPLC = msgToPLC + struct.pack("h", int(di)) #bools saved as floats (1.0 or 0.0) -> converted as ints (1 or 0)
             
             # Sending a reply to client
             self.UDPServerSocket.sendto(msgToPLC, addr)

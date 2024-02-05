@@ -274,12 +274,12 @@ class RobotConnection:
             #for j in self.j_data:
             #    msgToPLC = msgToPLC + struct.pack("f", j)
 
-            for ai in self.j_data:                                  # CAMBIA CON AI DATA !!!!!!!!!!!!!!!!!!!!!!!!!!
+            for ai in self.ai_data:                                 
                 msgToPLC = msgToPLC + struct.pack("f", ai)
 
             #for do in self.do_data:
             #    msgToPLC = msgToPLC + struct.pack("h", do)
-            for di in self.do_data:                                 # CAMBIA CON DI DATA !!!!!!!!!!!!!!!!!!!!!!!!!!
+            for di in self.di_data:                                 
                 msgToPLC = msgToPLC + struct.pack("h", int(di)) #bools saved as floats (1.0 or 0.0) -> converted as ints (1 or 0)
             
             # Sending a reply to client

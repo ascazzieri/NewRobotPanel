@@ -11,10 +11,10 @@
             "tcp_port_entry": "1012"
         },
         "selectedJoints": 4,
-        "ao_entry": 4,
-        "ai_entry": 4,
-        "do_entry": 15,
-        "di_entry": 15,
+        "ao_entry": 5,
+        "ai_entry": 5,
+        "do_entry": 16,
+        "di_entry": 16,
         "isSimulate": 0,
         "isActive": 1,
         "move_joints": [

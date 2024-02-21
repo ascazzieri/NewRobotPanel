@@ -26,10 +26,11 @@ class Data:
     JOINTS_OPTIONS  = [4, 6]
 
     # Data exchange variables
-    J_COUNT        = JOINTS_OPTIONS[0]  # axis
-    A_COUNT        = 4                  # analogs
-    DO_COUNT       = 4                  # output digital (PY->UE)
-    DI_COUNT       = 6                  # input digital (UE->PY)
+    J_COUNT        = JOINTS_OPTIONS[0]   # analog (PLC) outputs: actual joints poisition (robot -> py -> UE)
+    AO_COUNT       = J_COUNT       # analog (PLC) outputs: spares (robot -> py -> UE)
+    AI_COUNT       = J_COUNT             # analog (PLC) inputs : only spares (UE -> py -> robot)
+    DO_COUNT       = 15                  # output digital (robot -> py -> UE)
+    DI_COUNT       = 15                  # input digital (UE -> py -> robot)
 
     # true if you want to simulate locally a fixed pose
     IS_DEBUG        = False

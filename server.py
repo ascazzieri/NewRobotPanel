@@ -8,7 +8,7 @@ from data import Data
 from serverGUI import ConnectionPanel
 from logger import Logger
 from utils import is_number_regex
-from fanucpy import Robot
+#from fanucpy import Robot
 # Universal Robot imports
 import rtde.rtde as rtde
 import rtde.rtde_config as rtde_config
@@ -125,7 +125,7 @@ class RobotConnection:
         self.isRunning = False
 
 
-    def onStart(self, robotType, udpHostEntry, udpPortEntry, tcpHostEntry, tcpPortEntry, j_count, a_count, do_count, di_count, isSimulate, isActive):
+    def onStart(self, robotType, udpHostEntry, udpPortEntry, tcpHostEntry, tcpPortEntry, j_count, ao_count, ai_count, do_count, di_count, isSimulate, isActive):
         # get modified values
         self.data.ROBOT_TYPE = robotType
         self.data.UDP_HOST = udpHostEntry
@@ -133,7 +133,8 @@ class RobotConnection:
         self.data.TCP_HOST = tcpHostEntry
         self.data.TCP_PORT = int(tcpPortEntry)
         self.data.J_COUNT = int(j_count)
-        self.data.A_COUNT = int(a_count)
+        self.data.AO_COUNT = int(ao_count)
+        self.data.AI_COUNT = int(ai_count)
         self.data.DO_COUNT = int(do_count)
         self.data.DI_COUNT = int(di_count)
         self.data.IS_DEBUG = True if isSimulate == 1 else False
@@ -157,7 +158,8 @@ class RobotConnection:
 
         # init data exchange variable
         self.j_data = [0.0] * self.data.J_COUNT
-        self.a_data = [0.0] * self.data.A_COUNT
+        self.ao_data = [0.0] * self.data.AO_COUNT
+        self.ai_data = [0.0] * self.data.AI_COUNT
         self.do_data = [0.0] * self.data.DO_COUNT
         self.di_data = [0.0] * self.data.DI_COUNT
         
@@ -231,44 +233,54 @@ class RobotConnection:
             msg = bytesAddressPair[0]
             addr = bytesAddressPair[1]
 
-            # getting data from message
-            dataCount = self.data.J_COUNT + self.data.A_COUNT + self.data.DO_COUNT
+
+            ##########################
+            ######   RECEIVE    ######
+            ######  py -> robot ######
+            ##########################  
+            # getting data from message: axis positions, spare analog outputs, spare digital outputs 
+            dataCount = self.data.J_COUNT + self.data.AO_COUNT + self.data.DO_COUNT
             start = 0
             for i in range(dataCount):
                 dataIndex = i+1
                 if dataIndex <= self.data.J_COUNT:
-                    # axis
+                    # Axis
                     end = start + 4
                     self.j_data[i] = struct.unpack("f", msg[start:end])[0]
-                elif dataIndex > self.data.J_COUNT and dataIndex <= self.data.J_COUNT+self.data.A_COUNT:
-                    # analogs
+                elif dataIndex > self.data.J_COUNT and dataIndex <= self.data.J_COUNT+self.data.AO_COUNT:
+                    # Analog outputs (second half of PLC Analog Outputs)
                     end = start + 4
-                    self.a_data[i-self.data.J_COUNT] = struct.unpack("f", msg[start:end])[0]
-                elif dataIndex > self.data.J_COUNT+self.data.A_COUNT and dataIndex <= self.data.J_COUNT+self.data.A_COUNT+self.data.DO_COUNT:
-                    # digital output
+                    self.ao_data[i-self.data.J_COUNT] = struct.unpack("f", msg[start:end])[0]
+                elif dataIndex > self.data.J_COUNT+self.data.AO_COUNT and dataIndex <= self.data.J_COUNT+self.data.AO_COUNT+self.data.DO_COUNT:
+                    # Digital output
                     end = start + 2
-                    self.do_data[i-self.data.J_COUNT-self.data.A_COUNT] = struct.unpack("h", msg[start:end])[0]
+                    self.do_data[i-self.data.J_COUNT-self.data.AO_COUNT] = struct.unpack("h", msg[start:end])[0]
                 start = end
 
-            # add update to queue
+            # add update to queuedi_data
             queue.put([self.id, {'msgJRecv-udp': self.j_data}])
-            queue.put([self.id, {'msgARecv-udp': self.a_data}])
+            queue.put([self.id, {'msgARecv-udp': self.ao_data}])
             queue.put([self.id, {'msgDORecv-udp': self.do_data}])
 
             # don't send data if simulating axis movement
             if self.data.IS_DEBUG:
                 continue
 
-            # pack message to return to PLC 
+            ##########################
+            #######    SEND    #######
+            ######  py -> robot ######
+            ##########################   
             msgToPLC = bytes()
-            for j in self.j_data:
-                msgToPLC = msgToPLC + struct.pack("f", j)
-            for a in self.a_data:
-                msgToPLC = msgToPLC + struct.pack("f", a)
-            for do in self.do_data:
-                msgToPLC = msgToPLC + struct.pack("h", do)
-            for di in self.di_data:
-                msgToPLC = msgToPLC + struct.pack("h", int(di))
+            #for j in self.j_data:
+            #    msgToPLC = msgToPLC + struct.pack("f", j)
+
+            for ai in self.ai_data:                                 
+                msgToPLC = msgToPLC + struct.pack("f", ai)
+
+            #for do in self.do_data:
+            #    msgToPLC = msgToPLC + struct.pack("h", do)
+            for di in self.di_data:                                 
+                msgToPLC = msgToPLC + struct.pack("h", int(di)) #bools saved as floats (1.0 or 0.0) -> converted as ints (1 or 0)
             
             # Sending a reply to client
             self.UDPServerSocket.sendto(msgToPLC, addr)
@@ -276,7 +288,7 @@ class RobotConnection:
             # add update to queue
             queue.put([self.id, {'pktsSent-udp': self.udpPacketsSent}])
             queue.put([self.id, {'msgJSent-udp': self.j_data}])
-            queue.put([self.id, {'msgASent-udp': self.a_data}])
+            queue.put([self.id, {'msgASent-udp': self.ao_data}])
             queue.put([self.id, {'msgDOSent-udp': self.do_data}])
             queue.put([self.id, {'msgDISent-udp': self.di_data}])
 
@@ -361,14 +373,20 @@ class RobotConnection:
                     # main loop SEND-RECV
                     while not self.stop_threads.is_set():
                         
-                        time.sleep(1/30)                            
-                        
+                        time.sleep(1/30)      
+
+                        ##########################
+                        #######    SEND    #######
+                        #######  UE -> py  #######
+                        ##########################                                            
                         # pack UDP data to create a message
+                        # (numAxes) joints + (numAxes) spare AOs + 15 DOs
                         j_string = "&".join([str(j) for j in self.j_data])
+                        ao_string = "&".join(str(ao) for ao in self.ao_data)
                         do_string = "&".join([str(do) for do in self.do_data])
-                        msgToUE = bytes(j_string + "&" + do_string,"utf-8")
+                        msgToUE = bytes(j_string + "&" + ao_string + "&" + do_string,"utf-8")
                            
-                        # SEND message to UNREAL
+                        # SEND message (TCP, py -> UE)
                         try:
                             conn.sendall(msgToUE)
                             self.tcpPacketsSent += 1
@@ -380,9 +398,11 @@ class RobotConnection:
                             logger.log("Error SEND: " + str(err))
                             break
 
-                        # logger.log(MsgPerUE)
-                        
-                        # RECEIVE data from UNREAL
+                        ##########################
+                        #######  RECEIVE   #######
+                        #######  UE -> py  #######
+                        ##########################
+                        # receive (PLC) AIs and DIs
                         try:
                             ReceivedDataUnDecoded = conn.recv(self.data.TCP_PACKET_SIZE)
                             # logger.log(ReceivedDataUnDecoded)
@@ -411,13 +431,29 @@ class RobotConnection:
                         # print data after splitting
                         logger.log(str(self.id) + " - ".join([el for el in packet]))
 
-                        for i in range(1, len(packet)):
-                            try: 
-                                if is_number_regex(packet[i]):
-                                    self.di_data[i-1] = float(packet[i]) 
-                            except ValueError as err: 
-                                logger.log(str(err)) 
-                                logger.log(str(self.id) + " --- bad data received!")
+                        #for i in range(1, len(packet)):
+                        #    try: 
+                        #        if is_number_regex(packet[i]):
+                        #            self.di_data[i-1] = float(packet[i]) 
+                        #    except ValueError as err: 
+                        #        logger.log(str(err)) 
+                        #        logger.log(str(self.id) + " --- bad data received!")
+                        
+                        for ai in range(1,self.data.AI_COUNT):
+                            try:
+                                if is_number_regex(packet[ai]):
+                                    self.ai_data[ai-1] = float(packet[ai])
+                            except ValueError as err:
+                                logger.log(str(err))
+                                logger.log(str(self.id) + " --- bad data received")
+                        
+                        for di in range(1, self.data.DI_COUNT):
+                            try:
+                                if is_number_regex(packet[di]):
+                                    self.di_data[di-1] = float(packet[di])
+                            except ValueError as err:
+                                logger.log(str(err))
+                                logger.log(str(self.id) + " --- bad received data")
                         
                         # add update to queue
                         queue.put([self.id, {'msgDIRecv-tcp': self.di_data}])

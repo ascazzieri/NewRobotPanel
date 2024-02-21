@@ -439,7 +439,7 @@ class RobotConnection:
                         #        logger.log(str(err)) 
                         #        logger.log(str(self.id) + " --- bad data received!")
                         
-                        for ai in range(1,self.data.AO_COUNT):
+                        for ai in range(1,self.data.AI_COUNT):
                             try:
                                 if is_number_regex(packet[ai]):
                                     self.ai_data[ai-1] = float(packet[ai])
